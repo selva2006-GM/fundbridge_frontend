@@ -1,0 +1,165 @@
+.payout-page {
+    width: 100%;
+    max-width: 1000px;
+}
+
+.payout-page .profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.payout-page .profile-header h2 {
+    margin: 0 0 8px;
+    font-size: 28px;
+}
+
+.payout-page .profile-header p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.payout-page .profile-header button {
+    padding: 9px 18px;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+
+/* FORM SECTIONS */
+
+.payout-form .form-section {
+    padding: 28px 32px;
+    margin-bottom: 24px;
+
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.payout-form .form-section h3 {
+    margin: 0 0 24px;
+    font-size: 19px;
+}
+
+
+/* LABELS */
+
+.payout-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-bottom: 20px;
+
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+
+/* INPUTS AND SELECT */
+
+.payout-form input,
+.payout-form select {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+}
+
+.payout-form input:focus,
+.payout-form select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+/* PAYOUT METHOD */
+
+.payout-form select {
+    max-width: 300px;
+}
+
+
+/* BUTTON AREA */
+
+.payout-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+
+    margin-top: 25px;
+}
+
+.payout-actions button {
+    padding: 11px 20px;
+
+    border-radius: 7px;
+    border: 1px solid #d1d5db;
+
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.payout-actions button:first-child {
+    background: white;
+    color: #374151;
+}
+
+.payout-actions button:last-child {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: white;
+}
+
+.payout-actions button:last-child:hover {
+    background: #1d4ed8;
+}
+
+
+/* MESSAGE */
+
+.payout-message {
+    padding: 12px 15px;
+
+    background: #f0fdf4;
+    color: #166534;
+
+    border: 1px solid #bbf7d0;
+    border-radius: 7px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+    .payout-page .profile-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .payout-form .form-section {
+        padding: 20px;
+    }
+
+    .payout-actions {
+        flex-direction: column-reverse;
+    }
+
+    .payout-actions button {
+        width: 100%;
+    }
+}

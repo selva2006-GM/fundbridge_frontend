@@ -1,0 +1,105 @@
+.register-form {
+    width: 100%;
+    max-width: 420px;
+    margin: 80px auto;
+    padding: 40px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.register-form h1 {
+    margin: 0 0 10px;
+    text-align: center;
+    font-size: 32px;
+    color: #1f2937;
+}
+
+.register-form input {
+    width: 100%;
+    padding: 14px 16px;
+
+    font-size: 16px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    box-sizing: border-box;
+    outline: none;
+
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.register-form input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.register-form > button {
+    padding: 14px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #2563eb;
+    color: white;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.register-form > button:hover {
+    background: #1d4ed8;
+}
+
+.register-form p {
+    margin: 0;
+    text-align: center;
+    color: #6b7280;
+}
+
+.register-form p:last-child button {
+    padding: 0;
+
+    background: none;
+    border: none;
+
+    color: #2563eb;
+    font-size: inherit;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.register-form p:last-child button:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+    .register-form {
+        width: auto;
+        margin: 40px 20px;
+        padding: 30px 20px;
+    }
+}
+
+
+.home-button {
+    background: transparent !important;
+    color: #6b7280 !important;
+    border: 1px solid #d1d5db !important;
+}
+
+.home-button:hover {
+    background: #f3f4f6 !important;
+    color: #1f2937 !important;
+}

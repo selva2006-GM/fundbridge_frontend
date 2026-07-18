@@ -1,0 +1,76 @@
+.navbar {
+    height: 70px;
+    padding: 0 6%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: white;
+    border-bottom: 1px solid #eee;
+}
+
+.nav-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2563eb;
+    cursor: pointer;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-links button {
+    padding: 9px 14px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.nav-links button:hover {
+    color: #2563eb;
+}
+
+.nav-links .start-campaign-btn {
+    color: #2563eb;
+}
+
+.nav-links .register-btn {
+    background: #2563eb;
+    color: white;
+
+    border-radius: 7px;
+}
+
+.nav-links .register-btn:hover {
+    background: #1d4ed8;
+    color: white;
+}
+
+.nav-links .logout-btn {
+    color: #dc2626;
+}
+
+
+@media (max-width: 700px) {
+
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .nav-links button {
+        display: none;
+    }
+
+    .nav-links .start-campaign-btn,
+    .nav-links .register-btn {
+        display: block;
+    }
+
+}

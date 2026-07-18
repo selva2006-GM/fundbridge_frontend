@@ -1,0 +1,122 @@
+.campaigns-page {
+    max-width: 1200px;
+    margin: auto;
+    padding: 60px 30px;
+    min-height: 100vh;
+}
+
+.campaigns-page h1 {
+    text-align: center;
+    font-size: 38px;
+    margin-bottom: 10px;
+    color: #1f2937;
+}
+
+
+/* Filters */
+
+.campaign-filters {
+    display: flex;
+    gap: 15px;
+    margin: 40px 0;
+}
+
+.campaign-filters input,
+.campaign-filters select {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    background: white;
+}
+
+.campaign-filters input {
+    flex: 1;
+}
+
+.campaign-filters input:focus,
+.campaign-filters select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+
+/* Campaign grid */
+
+.campaigns-page .campaign-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+
+/* No campaigns */
+
+.no-campaigns {
+    text-align: center;
+    margin-top: 50px;
+    color: #666;
+    font-size: 17px;
+}
+
+
+/* Tablet */
+
+@media (max-width: 900px) {
+    .campaigns-page .campaign-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .campaign-filters {
+        flex-wrap: wrap;
+    }
+
+    .campaign-filters input {
+        width: 100%;
+        flex: none;
+    }
+
+    .campaign-filters select {
+        flex: 1;
+    }
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    .campaigns-page {
+        padding: 40px 20px;
+    }
+
+    .campaigns-page h1 {
+        font-size: 30px;
+    }
+
+    .campaign-filters {
+        flex-direction: column;
+    }
+
+    .campaign-filters input,
+    .campaign-filters select {
+        width: 100%;
+    }
+
+    .campaigns-page .campaign-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+.campaign-loader {
+    text-align: center;
+    padding: 40px 0;
+    color: #666;
+}
+
+
+
+.profile-main .campaigns-page {
+    max-width: none;
+    padding: 0;
+}

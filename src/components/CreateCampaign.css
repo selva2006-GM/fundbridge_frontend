@@ -1,0 +1,315 @@
+/* =========================
+   CREATE CAMPAIGN PAGE
+========================= */
+
+.create-campaign-page {
+    width: 100%;
+}
+
+.create-campaign-form {
+    width: 100%;
+    max-width: 1000px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.create-campaign-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 30px;
+
+    margin-bottom: 30px;
+}
+
+.create-campaign-header h1 {
+    margin: 0 0 8px;
+
+    color: #111827;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.create-campaign-header p {
+    margin: 0;
+
+    color: #6b7280;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.create-campaign-header > button {
+    padding: 9px 18px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+
+    background: #ffffff;
+    color: #374151;
+
+    font-size: 14px;
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.create-campaign-header > button:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+}
+
+
+/* =========================
+   FORM SECTIONS
+========================= */
+
+.form-section {
+    margin-bottom: 22px;
+    padding: 25px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.form-section h2 {
+    margin: 0 0 24px;
+
+    color: #111827;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   LABELS
+========================= */
+
+.create-campaign-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-bottom: 20px;
+
+    color: #374151;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.create-campaign-form label:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================
+   INPUTS
+========================= */
+
+.create-campaign-form input,
+.create-campaign-form textarea,
+.create-campaign-form select {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+
+    background: #ffffff;
+    color: #111827;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+.create-campaign-form input::placeholder,
+.create-campaign-form textarea::placeholder {
+    color: #9ca3af;
+}
+
+.create-campaign-form input:focus,
+.create-campaign-form textarea:focus,
+.create-campaign-form select:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+/* =========================
+   TEXTAREA
+========================= */
+
+.create-campaign-form textarea {
+    min-height: 150px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   TWO COLUMN ROW
+========================= */
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.form-row label {
+    margin-bottom: 0;
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.create-campaign-message {
+    margin: 0 0 20px;
+    padding: 12px 15px;
+
+    background: #fef2f2;
+    color: #b91c1c;
+
+    border: 1px solid #fecaca;
+    border-radius: 7px;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.create-campaign-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+
+    padding: 20px 0 10px;
+}
+
+.create-campaign-actions button {
+    padding: 11px 22px;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+/* Cancel button */
+
+.create-campaign-actions button:first-child {
+    border: 1px solid #d1d5db;
+
+    background: #ffffff;
+    color: #374151;
+}
+
+.create-campaign-actions button:first-child:hover {
+    background: #f3f4f6;
+}
+
+
+/* Create button */
+
+.create-campaign-actions button:last-child {
+    border: 1px solid #2563eb;
+
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.create-campaign-actions button:last-child:hover {
+    background: #1d4ed8;
+}
+
+.create-campaign-actions button:last-child:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.change-image-button {
+    margin-top: 12px;
+    padding: 9px 16px;
+
+    background: #fff;
+    color: #dc2626;
+
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.change-image-button:hover {
+    background: #fef2f2;
+    border-color: #dc2626;
+}
+
+.change-image-button:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    .create-campaign-header {
+        flex-direction: column;
+    }
+
+    .create-campaign-header > button {
+        width: 100%;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-section {
+        padding: 20px;
+    }
+
+    .create-campaign-actions {
+        flex-direction: column-reverse;
+    }
+
+    .create-campaign-actions button {
+        width: 100%;
+    }
+}
+
+
