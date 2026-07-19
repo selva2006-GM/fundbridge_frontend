@@ -5,9 +5,18 @@ export default function Dashboard({
     campaigns,
     setActivePage
 }) {
-    const activeCampaigns = campaigns.filter(
-        (campaign) => campaign.status === "active"
-    );
+    const activeCampaigns = campaigns.filter((campaign) => {
+        const endDate = new Date(campaign.end_date);
+        const today = new Date();
+    
+        const raised = Number(campaign.raised_amount || 0);
+        const goal = Number(campaign.goal_amount || 0);
+    
+        return (
+            endDate >= today &&
+            raised < goal
+        );
+    });
 
     const totalRaised = campaigns.reduce(
         (total, campaign) =>

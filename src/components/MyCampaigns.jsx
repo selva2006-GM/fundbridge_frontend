@@ -4,9 +4,10 @@ import API_URL from "../../../config/api";
 import "./MyCampaigns.css";
 
 export default function MyCampaigns({
-    campaigns,
+    campaigns = [],
     setCampaigns,
-    setActivePage
+    setActivePage,
+    setSelectedCampaignId
 }) {
 
     async function handleDelete(campaignId) {
@@ -110,18 +111,20 @@ export default function MyCampaigns({
 
                             <CampaignCard
                                 campaign={campaign}
+                                showDonate={false}
                             />
 
                             <div className="campaign-manage-actions">
 
-                                <button
-                                    className="edit-campaign-btn"
-                                    onClick={() => {
-                                        // We'll implement editing next
-                                    }}
-                                >
-                                    Edit
-                                </button>
+                            <button
+                                className="edit-campaign-btn"
+                                onClick={() => {
+                                    setSelectedCampaignId(campaign.id);
+                                    setActivePage("edit-campaign");
+                                }}
+                            >
+                                Edit
+                            </button>
 
                                 <button
                                     className="remove-campaign-btn"

@@ -11,6 +11,7 @@ import Settings from "./pages/Settings";
 import PayoutDetails from "./pages/PayoutDetails";
 import Campaigns from "../Campaigns";
 import CreateCampaign from "../CreateCampaign";
+import EditCampaign from "./EditCampaign";
 
 import "./Profile.css";
 
@@ -19,14 +20,16 @@ export default function Profile() {
 
     const [activePage, setActivePage] = useState("dashboard");
 
+
     const [user, setUser] = useState(null);
     const [campaigns, setCampaigns] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const [selectedCampaignId, setSelectedCampaignId] =
+        useState(null);
 
     async function fetchMyCampaigns() {
         const token = localStorage.getItem("token");
-    
+
         try {
             const response = await fetch(
                 `${API_URL}/api/campaigns/my`,
@@ -36,19 +39,23 @@ export default function Profile() {
                     }
                 }
             );
-    
+
             const data = await response.json();
-    
+
             if (!response.ok) {
-                console.error(data.message);
-                return;
+                throw new Error(
+                    data.message ||
+                    "Failed to fetch campaigns"
+                );
             }
-    
-            // setCampaigns(data.campaigns || []);
-    
+
+            console.log("MY CAMPAIGNS:", data.campaigns);
+
+            setCampaigns(data.campaigns || []);
+
         } catch (error) {
             console.error(
-                "Fetch campaigns error:",
+                "FETCH MY CAMPAIGNS ERROR:",
                 error
             );
         }
@@ -92,7 +99,7 @@ export default function Profile() {
         }
 
         fetchProfile();
-    fetchMyCampaigns();
+        fetchMyCampaigns();
     }, [navigate]);
 
     if (loading) {
@@ -124,14 +131,14 @@ export default function Profile() {
 
                 {activePage === "create-campaign" && (
                     <CreateCampaign
-                    onCancel={() =>
-                        setActivePage("dashboard")
-                    }
-                    onSuccess={async () => {
-                        await fetchMyCampaigns();
-                        setActivePage("my-campaigns");
-                    }}
-                />
+                        onCancel={() =>
+                            setActivePage("dashboard")
+                        }
+                        onSuccess={async () => {
+                            await fetchMyCampaigns();
+                            setActivePage("my-campaigns");
+                        }}
+                    />
                 )}
 
                 {activePage === "my-campaigns" && (
@@ -139,6 +146,7 @@ export default function Profile() {
                         campaigns={campaigns}
                         setCampaigns={setCampaigns}
                         setActivePage={setActivePage}
+                        setSelectedCampaignId={setSelectedCampaignId}
                     />
                 )}
 
@@ -153,6 +161,29 @@ export default function Profile() {
                         setActivePage={setActivePage}
                     />
                 )}
+
+                    {activePage === "edit-campaign" && (
+                        <EditCampaign
+                            campaignId={selectedCampaignId}
+                            setActivePage={setActivePage}
+                            setCampaigns={setCampaigns}
+                        />
+                    )}
+
+                {activePage === "verify-payout" && (
+                    <VerifyPayout
+                        setActivePage={setActivePage}
+                    />
+                )}
+
+                {activePage === "edit-campaign" && (
+                    <EditCampaign
+                        campaignId={selectedCampaignId}
+                        setActivePage={setActivePage}
+                        setCampaigns={setCampaigns}
+                    />
+                )}
+
 
                 {activePage === "payout" && (
                     <PayoutDetails

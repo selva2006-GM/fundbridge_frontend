@@ -5,6 +5,10 @@ export default function CampaignCard({ campaign }) {
 
     const navigate = useNavigate();
 
+    const isEnded =
+    campaign.end_date &&
+    new Date(campaign.end_date) < new Date();
+
     function handleDonate() {
         navigate(`/campaign/${campaign.id}/donate`);
     }
@@ -71,12 +75,18 @@ export default function CampaignCard({ campaign }) {
                 />
 
 
-                <button
-                    className="donate-button"
-                    onClick={handleDonate}
-                >
-                    Donate
-                </button>
+                {isEnded ? (
+                    <div className="campaign-ended">
+                        Campaign Ended
+                    </div>
+                ) : (
+                    <button
+                        className="donate-button"
+                        onClick={handleDonate}
+                    >
+                        Donate
+                    </button>
+                )}
 
             </div>
 

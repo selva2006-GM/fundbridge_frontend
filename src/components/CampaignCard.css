@@ -153,6 +153,31 @@
     transform: translateY(-1px);
 }
 
+.campaign-ended-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #e5e7eb;
+    color: #6b7280;
+    font-weight: 600;
+    cursor: not-allowed;
+}
+
+.campaign-ended {
+    margin-top: 16px;
+    padding: 10px 0;
+
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #991b1b;
+    background: #fef2f2;
+
+    border-radius: 6px;
+}
+
 
 /* Responsive */
 
@@ -175,3 +200,5 @@
         margin: 4px 0;
     }
 }
+
+

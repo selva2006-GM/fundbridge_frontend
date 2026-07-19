@@ -12,7 +12,7 @@ export default function Login() {
     const location = useLocation();
 
     const [form, setForm] = useState({
-        email: "",
+        identifier: "",
         password: ""
     });
 
@@ -80,10 +80,10 @@ export default function Login() {
                 <h1>Login</h1>
 
                 <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={form.email}
+                    type="text"
+                    name="identifier"
+                    placeholder="Email or username"
+                    value={form.identifier}
                     onChange={handleChange}
                     required
                 />

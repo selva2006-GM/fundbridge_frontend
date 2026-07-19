@@ -1,0 +1,85 @@
+.profile-sidebar {
+    position: relative;
+    width: 280px;
+    min-width: 280px;
+    transition: width 0.3s ease, min-width 0.3s ease;
+}
+
+.profile-sidebar.collapsed {
+    width: 80px;
+    min-width: 80px;
+}
+
+/* Arrow button */
+
+.sidebar-toggle {
+    position: absolute;
+    top: 25px;
+    right: -16px;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 50%;
+
+    background: white;
+    color: #334155;
+
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+    transition: transform 0.2s ease;
+}
+
+.sidebar-toggle:hover {
+    transform: scale(1.08);
+}
+
+/* User information */
+
+.profile-user-details {
+    overflow: hidden;
+    white-space: nowrap;
+
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.profile-sidebar.collapsed .profile-user-details {
+    display: none;
+}
+
+.profile-sidebar.collapsed .profile-user {
+    justify-content: center;
+}
+
+/* Menu */
+
+.profile-sidebar.collapsed .profile-menu button {
+    padding-left: 0;
+    padding-right: 0;
+    justify-content: center;
+}
+
+.profile-sidebar.collapsed .menu-name {
+    display: none;
+}
+
+/* Logout */
+
+.profile-sidebar.collapsed .profile-logout {
+    display: flex;
+    justify-content: center;
+}
+
+.profile-sidebar.collapsed .logout-text {
+    display: none;
+}

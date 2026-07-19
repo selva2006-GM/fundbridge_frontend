@@ -6,25 +6,10 @@ import "./PayoutDetails.css";
 export default function PayoutDetails({
     setActivePage
 }) {
-    const [form, setForm] = useState({
-        payout_method: "bank",
 
-        account_holder_name: "",
-        bank_name: "",
-        account_number: "",
-        ifsc_code: "",
-
-        upi_id: ""
-    });
-
-    const [loading, setLoading] =
-        useState(true);
-
-    const [saving, setSaving] =
-        useState(false);
-
-    const [message, setMessage] =
-        useState("");
+    const [payout, setPayout] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
 
     useEffect(() => {
@@ -36,6 +21,9 @@ export default function PayoutDetails({
 
             try {
 
+                setLoading(true);
+                setError("");
+
                 const response = await fetch(
                     `${API_URL}/api/payout`,
                     {
@@ -46,55 +34,35 @@ export default function PayoutDetails({
                     }
                 );
 
-
                 const data =
                     await response.json();
 
 
-                if (
-                    response.ok &&
-                    data.payout
-                ) {
+                if (!response.ok) {
 
-                    setForm({
-                        payout_method:
-                            data.payout
-                                .payout_method ||
-                            "bank",
+                    setError(
+                        data.message ||
+                        "Unable to load payout details"
+                    );
 
-                        account_holder_name:
-                            data.payout
-                                .account_holder_name ||
-                            "",
-
-                        bank_name:
-                            data.payout
-                                .bank_name ||
-                            "",
-
-                        account_number:
-                            data.payout
-                                .account_number ||
-                            "",
-
-                        ifsc_code:
-                            data.payout
-                                .ifsc_code ||
-                            "",
-
-                        upi_id:
-                            data.payout
-                                .upi_id ||
-                            ""
-                    });
-
+                    return;
                 }
+
+
+                setPayout(
+                    data.payout || null
+                );
+
 
             } catch (error) {
 
                 console.error(
                     "Payout fetch error:",
                     error
+                );
+
+                setError(
+                    "Unable to load payout details"
                 );
 
             } finally {
@@ -110,93 +78,10 @@ export default function PayoutDetails({
     }, []);
 
 
-    function handleChange(e) {
-
-        setForm({
-            ...form,
-
-            [e.target.name]:
-                e.target.value
-        });
-
-    }
-
-
-    async function handleSave(e) {
-
-        e.preventDefault();
-
-        const token =
-            localStorage.getItem("token");
-
-
-        try {
-
-            setSaving(true);
-
-            setMessage("");
-
-
-            const response = await fetch(
-                `${API_URL}/api/payout`,
-                {
-                    method: "PUT",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json",
-
-                        Authorization:
-                            `Bearer ${token}`
-                    },
-
-                    body:
-                        JSON.stringify(form)
-                }
-            );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                setMessage(
-                    data.message ||
-                    "Unable to save payout details"
-                );
-
-                return;
-            }
-
-
-            setMessage(
-                "Payout details saved successfully"
-            );
-
-
-        } catch (error) {
-
-            console.error(error);
-
-            setMessage(
-                "Unable to save payout details"
-            );
-
-        } finally {
-
-            setSaving(false);
-
-        }
-    }
-
-
     if (loading) {
 
         return (
-            <p>
+            <p className="payout-loading">
                 Loading payout details...
             </p>
         );
@@ -208,6 +93,9 @@ export default function PayoutDetails({
 
         <div className="payout-page">
 
+
+            {/* HEADER */}
+
             <div className="profile-header">
 
                 <div>
@@ -217,18 +105,17 @@ export default function PayoutDetails({
                     </h2>
 
                     <p>
-                        Choose where your campaign
-                        funds should be received.
+                        Manage where your campaign
+                        funds are received.
                     </p>
 
                 </div>
 
 
                 <button
+                    type="button"
                     onClick={() =>
-                        setActivePage(
-                            "settings"
-                        )
+                        setActivePage("settings")
                     }
                 >
                     Back
@@ -237,203 +124,264 @@ export default function PayoutDetails({
             </div>
 
 
-            <form
-                className="payout-form"
-                onSubmit={handleSave}
-            >
+            {/* ERROR */}
+
+            {error && (
+
+                <p className="payout-message">
+                    {error}
+                </p>
+
+            )}
 
 
-                <div className="form-section">
+            {/* NO PAYOUT DETAILS */}
+
+            {!error && !payout && (
+
+                <div className="payout-empty">
+
+                    <div className="payout-empty-icon">
+                        $
+                    </div>
 
                     <h3>
-                        Payout Method
+                        No payout method added
                     </h3>
 
-
-                    <select
-                        name="payout_method"
-                        value={
-                            form.payout_method
-                        }
-                        onChange={
-                            handleChange
-                        }
-                    >
-
-                        <option value="bank">
-                            Bank Account
-                        </option>
-
-                        <option value="upi">
-                            UPI
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                {form.payout_method ===
-                    "bank" && (
-
-                    <div className="form-section">
-
-                        <h3>
-                            Bank Account
-                        </h3>
-
-
-                        <label>
-
-                            Account Holder Name
-
-                            <input
-                                name=
-                                    "account_holder_name"
-                                value={
-                                    form
-                                        .account_holder_name
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            />
-
-                        </label>
-
-
-                        <label>
-
-                            Bank Name
-
-                            <input
-                                name="bank_name"
-                                value={
-                                    form.bank_name
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            />
-
-                        </label>
-
-
-                        <label>
-
-                            Account Number
-
-                            <input
-                                name=
-                                    "account_number"
-                                value={
-                                    form
-                                        .account_number
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            />
-
-                        </label>
-
-
-                        <label>
-
-                            IFSC Code
-
-                            <input
-                                name="ifsc_code"
-                                value={
-                                    form.ifsc_code
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            />
-
-                        </label>
-
-                    </div>
-
-                )}
-
-
-                {form.payout_method ===
-                    "upi" && (
-
-                    <div className="form-section">
-
-                        <h3>
-                            UPI Details
-                        </h3>
-
-
-                        <label>
-
-                            UPI ID
-
-                            <input
-                                name="upi_id"
-                                placeholder=
-                                    "name@bank"
-                                value={
-                                    form.upi_id
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            />
-
-                        </label>
-
-                    </div>
-
-                )}
-
-
-                {message && (
-
-                    <p className="payout-message">
-                        {message}
+                    <p>
+                        Add a payout method before
+                        starting a campaign.
                     </p>
-
-                )}
-
-
-                <div className="payout-actions">
 
                     <button
                         type="button"
                         onClick={() =>
                             setActivePage(
-                                "settings"
+                                "edit-payout"
                             )
                         }
                     >
-                        Cancel
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        disabled={saving}
-                    >
-                        {saving
-                            ? "Saving..."
-                            : "Save Payout Details"
-                        }
+                        Add Payout Details
                     </button>
 
                 </div>
 
-            </form>
+            )}
+
+
+            {/* PAYOUT DETAILS */}
+
+            {!error && payout && (
+
+                <div className="payout-form">
+
+
+                    {/* METHOD */}
+
+                    <div className="form-section">
+
+                        <h3>
+                            Payout Method
+                        </h3>
+
+                        <div className="payout-detail-row">
+
+                            <span>
+                                Method
+                            </span>
+
+                            <strong>
+                                {
+                                    payout.payout_method ===
+                                    "bank"
+                                        ? "Bank Account"
+                                        : "UPI"
+                                }
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    {/* BANK DETAILS */}
+
+                    {payout.payout_method ===
+                        "bank" && (
+
+                        <div className="form-section">
+
+                            <h3>
+                                Bank Account
+                            </h3>
+
+
+                            <div className="payout-detail-row">
+
+                                <span>
+                                    Account Holder
+                                </span>
+
+                                <strong>
+                                    {
+                                        payout
+                                            .account_holder_name ||
+                                        "Not available"
+                                    }
+                                </strong>
+
+                            </div>
+
+
+                            <div className="payout-detail-row">
+
+                                <span>
+                                    Bank Name
+                                </span>
+
+                                <strong>
+                                    {
+                                        payout.bank_name ||
+                                        "Not available"
+                                    }
+                                </strong>
+
+                            </div>
+
+
+                            <div className="payout-detail-row">
+
+                                <span>
+                                    Account Number
+                                </span>
+
+                                <strong>
+                                    {
+                                        payout
+                                            .account_number ||
+                                        "Not available"
+                                    }
+                                </strong>
+
+                            </div>
+
+
+                            <div className="payout-detail-row">
+
+                                <span>
+                                    IFSC Code
+                                </span>
+
+                                <strong>
+                                    {
+                                        payout.ifsc_code ||
+                                        "Not available"
+                                    }
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    )}
+
+
+
+                    {/* UPI DETAILS */}
+
+                    {payout.payout_method ===
+                        "upi" && (
+
+                        <div className="form-section">
+
+                            <h3>
+                                UPI Details
+                            </h3>
+
+                            <div className="payout-detail-row">
+
+                                <span>
+                                    UPI ID
+                                </span>
+
+                                <strong>
+                                    {
+                                        payout.upi_id ||
+                                        "Not available"
+                                    }
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    )}
+
+
+
+                    {/* SECURITY NOTICE */}
+
+                    <div className="payout-security-notice">
+
+                        <span className="security-icon">
+                            🔒
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Payout details are protected
+                            </strong>
+
+                            <p>
+                                For your security, you must
+                                verify your identity before
+                                changing payout information.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    {/* ACTIONS */}
+
+                    <div className="payout-actions">
+
+                        <button
+                            type="button"
+                            onClick={() =>
+                                setActivePage(
+                                    "settings"
+                                )
+                            }
+                        >
+                            Back
+                        </button>
+
+
+                        <button
+                            type="button"
+                            onClick={() =>
+                                setActivePage(
+                                    "verify-payout"
+                                )
+                            }
+                        >
+                            Verify to Edit
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            )}
 
         </div>
+
     );
 }

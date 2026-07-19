@@ -7,6 +7,7 @@ import homeData from "./data.json";
 
 import "./Home.css";
 
+
 export default function Home() {
 
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    
 
     useEffect(() => {
 
@@ -79,11 +81,15 @@ export default function Home() {
     }
 
 
-    function startCampaign() {
+    function StartCampaign() {
         const token = localStorage.getItem("token");
     
         if (!token) {
-            navigate("/register");
+            navigate("/register", {
+                state: {
+                    returnTo: "/start-campaign"
+                }
+            });
             return;
         }
     
@@ -121,7 +127,7 @@ export default function Home() {
 
 
                         <button
-                            onClick={startCampaign}
+                            onClick={StartCampaign}
                         >
                             {homeData.hero.startButton}
                         </button>
@@ -292,7 +298,7 @@ export default function Home() {
                 </p>
 
                 <button
-                    onClick={startCampaign}
+                    onClick={StartCampaign}
                 >
                     {homeData.cta.button}
                 </button>
