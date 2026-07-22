@@ -1,0 +1,38 @@
+.my-campaign-item {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+}
+
+.my-campaign-item .campaign-card {
+    flex: 1;
+}
+
+.campaign-manage-actions {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    position: relative;
+    z-index: 5;
+}
+
+.edit-campaign-btn,
+.remove-campaign-btn {
+    display: block;
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.edit-campaign-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+}
+
+.remove-campaign-btn {
+    background: white;
+    color: #dc2626;
+    border: 1px solid #dc2626;
+}

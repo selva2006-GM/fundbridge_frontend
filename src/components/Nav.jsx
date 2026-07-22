@@ -1,4 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import logo from "../assets/logo.png";
+
 import "./Nav.css";
 
 export default function Nav() {
@@ -8,7 +10,8 @@ export default function Nav() {
     const token = localStorage.getItem("token");
     const isLoggedIn = !!token;
 
-    const isProfilePage = location.pathname === "/profile";
+    const isProfilePage =
+        location.pathname === "/profile";
 
     function handleStartCampaign() {
         if (!isLoggedIn) {
@@ -32,10 +35,15 @@ export default function Nav() {
                 className="nav-logo"
                 onClick={() => navigate("/")}
             >
-                FundBridge
+                <img
+                    src={logo}
+                    alt="FundBridge Logo"
+                    className="nav-logo-image"
+                />
+
+                <span>FundBridge</span>
             </div>
 
-            {/* Hide all nav buttons on Profile */}
             {!isProfilePage && (
                 <div className="nav-links">
 
@@ -43,7 +51,9 @@ export default function Nav() {
                         Home
                     </button>
 
-                    <button onClick={() => navigate("/campaigns")}>
+                    <button
+                        onClick={() => navigate("/campaigns")}
+                    >
                         Campaigns
                     </button>
 
@@ -56,7 +66,11 @@ export default function Nav() {
 
                     {isLoggedIn ? (
                         <>
-                            <button onClick={() => navigate("/profile")}>
+                            <button
+                                onClick={() =>
+                                    navigate("/profile")
+                                }
+                            >
                                 Profile
                             </button>
 
@@ -66,11 +80,19 @@ export default function Nav() {
                         </>
                     ) : (
                         <>
-                            <button onClick={() => navigate("/login")}>
+                            <button
+                                onClick={() =>
+                                    navigate("/login")
+                                }
+                            >
                                 Login
                             </button>
 
-                            <button onClick={() => navigate("/register")}>
+                            <button
+                                onClick={() =>
+                                    navigate("/register")
+                                }
+                            >
                                 Register
                             </button>
                         </>
