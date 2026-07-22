@@ -10,7 +10,6 @@ export default function CampaignCard({
 
     const navigate = useNavigate();
 
-    console.log("showdonet  : ", showDonate);
     const isEnded =
     campaign.end_date &&
     new Date(campaign.end_date) < new Date();

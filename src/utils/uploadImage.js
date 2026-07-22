@@ -5,9 +5,6 @@ export default async function uploadImage(file) {
     const uploadPreset =
         import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
-    console.log("Cloud name:", cloudName);
-    console.log("Upload preset:", uploadPreset);
-
     if (!cloudName || !uploadPreset) {
         throw new Error(
             "Cloudinary configuration is missing"
@@ -31,11 +28,6 @@ export default async function uploadImage(file) {
     );
 
     const data = await response.json();
-
-    console.log(
-        "Cloudinary response:",
-        data
-    );
 
     if (!response.ok) {
         throw new Error(

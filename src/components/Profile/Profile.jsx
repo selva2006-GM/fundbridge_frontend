@@ -55,8 +55,6 @@ export default function Profile() {
                 );
             }
 
-            console.log("MY CAMPAIGNS:", data.campaigns);
-
             setCampaigns(data.campaigns || []);
 
         } catch (error) {
