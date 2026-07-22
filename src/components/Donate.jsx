@@ -57,10 +57,7 @@ export default function Donate() {
     async function handlePayment() {
         const donationAmount = Number(amount);
     
-        if (
-            !donationAmount ||
-            donationAmount <= 0
-        ) {
+        if (!donationAmount || donationAmount <= 0) {
             setError(
                 "Please enter a valid donation amount"
             );
@@ -70,16 +67,23 @@ export default function Donate() {
         try {
             setError("");
     
-            // Create Razorpay order from backend
+            // Load Razorpay only when Donate is clicked
+            const loaded = await loadRazorpayScript();
     
+            if (!loaded) {
+                throw new Error(
+                    "Payment service failed to load"
+                );
+            }
+    
+            // Create Razorpay order
             const response = await fetch(
                 `${API_URL}/api/payments/create-order`,
                 {
                     method: "POST",
     
                     headers: {
-                        "Content-Type":
-                            "application/json"
+                        "Content-Type": "application/json"
                     },
     
                     body: JSON.stringify({
@@ -98,30 +102,14 @@ export default function Donate() {
                 );
             }
     
-    
-            // Check Razorpay script
-    
-            if (!window.Razorpay) {
-                throw new Error(
-                    "Payment service failed to load"
-                );
-            }
-    
-    
             const options = {
                 key: order.key,
-    
                 amount: order.amount,
-    
                 currency: order.currency,
-    
                 name: "FundBridge",
-    
                 description:
                     `Donation for ${campaign.title}`,
-    
                 order_id: order.orderId,
-    
     
                 handler: async function (
                     paymentResponse
@@ -147,7 +135,6 @@ export default function Donate() {
                         const verifyData =
                             await verifyResponse.json();
     
-    
                         if (!verifyResponse.ok) {
                             throw new Error(
                                 verifyData.message ||
@@ -155,11 +142,9 @@ export default function Donate() {
                             );
                         }
     
-    
                         alert(
                             "Thank you! Your donation was successful."
                         );
-    
     
                         navigate(
                             `/campaign/${campaign.id}`
@@ -177,7 +162,6 @@ export default function Donate() {
                     }
                 },
     
-    
                 modal: {
                     ondismiss: function () {
                         console.log(
@@ -186,81 +170,61 @@ export default function Donate() {
                     }
                 },
     
-    
                 theme: {
                     color: "#2563eb"
                 }
             };
     
-    
             const razorpay =
                 new window.Razorpay(options);
-    
     
             razorpay.on(
                 "payment.failed",
                 function (response) {
-    
                     console.error(
                         "Payment failed:",
                         response.error
                     );
     
-    
                     setError(
                         response.error.description ||
                         "Payment failed. Please try again."
                     );
-    
                 }
             );
     
-    
             razorpay.open();
     
-    
         } catch (error) {
-    
             console.error(
                 "Payment error:",
                 error
             );
     
-    
             setError(
                 error.message ||
                 "Unable to start payment"
             );
-    
         }
     }
-
-    if (loading) {
-        return (
-            <div className="donate-page">
-                <p>Loading donation details...</p>
-            </div>
-        );
-    }
-
-
-    if (!campaign) {
-        return (
-            <div className="donate-page">
-
-                <p>
-                    {error ||
-                        "Unable to load donation details."}
-                </p>
-
-                <button
-                    onClick={() => navigate(-1)}
-                >
-                    ← Go Back
-                </button>
-
-            </div>
-        );
+    function loadRazorpayScript() {
+        return new Promise((resolve) => {
+            if (window.Razorpay) {
+                resolve(true);
+                return;
+            }
+    
+            const script =
+                document.createElement("script");
+    
+            script.src =
+                "https://checkout.razorpay.com/v1/checkout.js";
+    
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+    
+            document.body.appendChild(script);
+        });
     }
 
 
