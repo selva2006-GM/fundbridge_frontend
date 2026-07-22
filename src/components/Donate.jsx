@@ -81,14 +81,16 @@ export default function Donate() {
                 `${API_URL}/api/payments/create-order`,
                 {
                     method: "POST",
-    
+            
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        Authorization:
+                            `Bearer ${localStorage.getItem("token")}`
                     },
-    
+            
                     body: JSON.stringify({
-                        campaignId: campaign.id,
-                        amount: donationAmount
+                        campaignId: id,
+                        amount: Number(amount)
                     })
                 }
             );
