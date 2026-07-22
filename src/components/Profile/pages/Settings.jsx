@@ -349,7 +349,9 @@ export default function Settings({ user, setUser , setActivePage}) {
 
                     </div>
 
-                    <button>
+                    <button 
+                        type = "button"
+                        onClick={()=>setActivePage("change-password")}>
                         Change Password
                     </button>
 
@@ -370,7 +372,9 @@ export default function Settings({ user, setUser , setActivePage}) {
                     account and associated personal data.
                 </p>
 
-                <button>
+                <button 
+                type="button"
+                 onClick={()=> setActivePage("delete-account")}>
                     Delete Account
                 </button>
 

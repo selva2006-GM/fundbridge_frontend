@@ -4,7 +4,7 @@ import CampaignCard from "./CampaignCard";
 import "./Campaigns.css";
 
 
-export default function Campaigns() {
+export default function Campaigns(){
     const [campaigns, setCampaigns] = useState([]);
 
     const [search, setSearch] = useState("");
@@ -16,6 +16,7 @@ export default function Campaigns() {
     const [hasMore, setHasMore] = useState(true);
 
     const loaderRef = useRef(null);
+
 
     // Fetch campaigns whenever page or filters change
     useEffect(() => {
@@ -198,12 +199,12 @@ export default function Campaigns() {
 
             <div className="campaign-grid">
 
-                {campaigns.map((campaign) => (
-                    <CampaignCard
-                        key={campaign.id}
-                        campaign={campaign}
-                    />
-                ))}
+            {campaigns.map((campaign) => (
+                <CampaignCard
+                    key={campaign.id}
+                    campaign={campaign}
+                />
+            ))}
 
             </div>
 

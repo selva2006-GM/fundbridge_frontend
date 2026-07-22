@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import API_URL from "../../config/api";
-import ProfileSidebar from "./ProfileSidebar";
+import ProfileSidebar from "./components/ProfileSidebar";
 
 import Dashboard from "./pages/Dashboard";
 import MyCampaigns from "./pages/MyCampaigns";
@@ -11,9 +11,13 @@ import Settings from "./pages/Settings";
 import PayoutDetails from "./pages/PayoutDetails";
 import Campaigns from "../Campaigns";
 import CreateCampaign from "../CreateCampaign";
-import EditCampaign from "./EditCampaign";
-
+import EditCampaign from "./pages/EditCampaign";
+import EditPayout from "./pages/EditPayout";
+import VerifyPayout from "./pages/VerifyPayout";
+import ChangePassword from "./pages/ChangePassword";
+import DeleteAccount from "./pages/DeleteAccount";
 import "./Profile.css";
+
 
 export default function Profile() {
     const navigate = useNavigate();
@@ -26,6 +30,8 @@ export default function Profile() {
     const [loading, setLoading] = useState(true);
     const [selectedCampaignId, setSelectedCampaignId] =
         useState(null);
+    const [payoutConnected, setPayoutConnected] =
+    useState(false);
 
     async function fetchMyCampaigns() {
         const token = localStorage.getItem("token");
@@ -62,44 +68,120 @@ export default function Profile() {
     }
 
     useEffect(() => {
-        async function fetchProfile() {
-            const token = localStorage.getItem("token");
 
+        async function fetchProfile() {
+    
+            const token =
+                localStorage.getItem("token");
+    
             if (!token) {
                 navigate("/login");
                 return;
             }
-
+    
             try {
+    
                 const response = await fetch(
                     `${API_URL}/profile`,
                     {
                         headers: {
-                            Authorization: `Bearer ${token}`
+                            Authorization:
+                                `Bearer ${token}`
                         }
                     }
                 );
-
-                const data = await response.json();
-
+    
+                const data =
+                    await response.json();
+    
                 if (!response.ok) {
                     localStorage.removeItem("token");
                     navigate("/login");
                     return;
                 }
-
+    
                 setUser(data.user);
-                setCampaigns(data.campaigns || []);
-
+                setCampaigns(
+                    data.campaigns || []
+                );
+    
             } catch (error) {
-                console.error(error);
+    
+                console.error(
+                    "Profile fetch error:",
+                    error
+                );
+    
             } finally {
+    
                 setLoading(false);
+    
             }
         }
-
+    
+    
+        async function fetchPayoutStatus() {
+    
+            const token =
+                localStorage.getItem("token");
+    
+            if (!token) {
+                return;
+            }
+    
+            try {
+    
+                const response = await fetch(
+                    `${API_URL}/api/payout`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`
+                        }
+                    }
+                );
+    
+                const data =
+                    await response.json();
+    
+                if (!response.ok) {
+                    return;
+                }
+    
+    
+                const connected =
+                    Boolean(
+                        data.payout
+                            ?.razorpay_account_id
+                    ) &&
+                    data.payout
+                        ?.razorpay_account_status ===
+                        "connected";
+    
+    
+                setPayoutConnected(
+                    connected
+                );
+    
+    
+            } catch (error) {
+    
+                console.error(
+                    "Payout status error:",
+                    error
+                );
+    
+            }
+        }
+    
+    
         fetchProfile();
+    
         fetchMyCampaigns();
+    
+        fetchPayoutStatus();
+    
+    
     }, [navigate]);
 
     if (loading) {
@@ -114,8 +196,34 @@ export default function Profile() {
                 activePage={activePage}
                 setActivePage={setActivePage}
             />
-
+            
             <main className="profile-main">
+            {!payoutConnected && (
+                    <div className="payout-reminder">
+
+                        <div>
+                            <strong>
+                                Complete your payout setup
+                            </strong>
+
+                            <p>
+                                Your campaigns will not be publicly
+                                visible or able to receive donations
+                                until you connect a payout account.
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={() =>
+                                setActivePage("payout")
+                            }
+                        >
+                            Set Up Payout
+                        </button>
+
+                    </div>
+                )}
 
                 {activePage === "dashboard" && (
                     <Dashboard
@@ -162,20 +270,12 @@ export default function Profile() {
                     />
                 )}
 
-                    {activePage === "edit-campaign" && (
-                        <EditCampaign
-                            campaignId={selectedCampaignId}
-                            setActivePage={setActivePage}
-                            setCampaigns={setCampaigns}
-                        />
-                    )}
 
-                {activePage === "verify-payout" && (
-                    <VerifyPayout
+                {activePage === "change-password" && (
+                    <ChangePassword
                         setActivePage={setActivePage}
                     />
                 )}
-
                 {activePage === "edit-campaign" && (
                     <EditCampaign
                         campaignId={selectedCampaignId}
@@ -184,12 +284,32 @@ export default function Profile() {
                     />
                 )}
 
+                {activePage === "verify-payout" && (
+                    <VerifyPayout
+                        setActivePage={setActivePage}
+                    />
+                )}
+
+    
+
 
                 {activePage === "payout" && (
                     <PayoutDetails
                         setActivePage={setActivePage}
                     />
                 )}
+
+                {activePage === "edit-payout" && (
+                    <EditPayout
+                        setActivePage={setActivePage}
+                    />
+                )}
+                {activePage === "delete-account" && (
+                    <DeleteAccount
+                        setActivePage={setActivePage}
+                    />
+                )}
+                
 
             </main>
 

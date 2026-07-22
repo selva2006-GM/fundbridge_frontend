@@ -1,10 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import "./CampaignCard.css";
 
-export default function CampaignCard({ campaign }) {
+export default function CampaignCard({
+    campaign,
+    showDonate = true,
+    showEdit = false,
+    onEdit = () => {}
+}) {
 
     const navigate = useNavigate();
 
+    console.log("showdonet  : ", showDonate);
     const isEnded =
     campaign.end_date &&
     new Date(campaign.end_date) < new Date();
@@ -74,19 +80,30 @@ export default function CampaignCard({ campaign }) {
                     )}
                 />
 
+{/* EDIT BUTTON */}
+{showEdit && (
+    <button
+        className="edit-campaign-btn"
+        onClick={() => onEdit(campaign.id)}
+    >
+        Edit Campaign
+    </button>
+)}
 
-                {isEnded ? (
-                    <div className="campaign-ended">
-                        Campaign Ended
-                    </div>
-                ) : (
-                    <button
-                        className="donate-button"
-                        onClick={handleDonate}
-                    >
-                        Donate
-                    </button>
-                )}
+{showDonate && (
+    isEnded ? (
+        <div className="campaign-ended">
+            Campaign Ended
+        </div>
+    ) : (
+        <button
+            className="donate-button"
+            onClick={handleDonate}
+        >
+            Donate
+        </button>
+    )
+)}
 
             </div>
 

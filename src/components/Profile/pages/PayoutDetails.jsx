@@ -7,9 +7,14 @@ export default function PayoutDetails({
     setActivePage
 }) {
 
-    const [payout, setPayout] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const [payout, setPayout] =
+        useState(null);
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [error, setError] =
+        useState("");
 
 
     useEffect(() => {
@@ -19,10 +24,21 @@ export default function PayoutDetails({
             const token =
                 localStorage.getItem("token");
 
+            if (!token) {
+                setError(
+                    "Please log in to view payout details."
+                );
+
+                setLoading(false);
+
+                return;
+            }
+
+
             try {
 
-                setLoading(true);
                 setError("");
+
 
                 const response = await fetch(
                     `${API_URL}/api/payout`,
@@ -34,6 +50,7 @@ export default function PayoutDetails({
                     }
                 );
 
+
                 const data =
                     await response.json();
 
@@ -42,7 +59,7 @@ export default function PayoutDetails({
 
                     setError(
                         data.message ||
-                        "Unable to load payout details"
+                        "Unable to load payout details."
                     );
 
                     return;
@@ -61,15 +78,18 @@ export default function PayoutDetails({
                     error
                 );
 
+
                 setError(
-                    "Unable to load payout details"
+                    "Unable to connect to the server."
                 );
+
 
             } finally {
 
                 setLoading(false);
 
             }
+
         }
 
 
@@ -78,15 +98,48 @@ export default function PayoutDetails({
     }, []);
 
 
-    if (loading) {
+
+    /*
+        Hide most of the Razorpay
+        account ID from the UI
+    */
+
+    function maskAccountId(accountId) {
+
+        if (!accountId) {
+            return "Not available";
+        }
+
+
+        if (accountId.length <= 8) {
+            return accountId;
+        }
+
 
         return (
-            <p className="payout-loading">
-                Loading payout details...
-            </p>
+            accountId.slice(0, 4) +
+            "••••••" +
+            accountId.slice(-4)
         );
 
     }
+
+
+
+    if (loading) {
+
+        return (
+
+            <div className="payout-loading">
+
+                Loading payout account...
+
+            </div>
+
+        );
+
+    }
+
 
 
     return (
@@ -98,15 +151,16 @@ export default function PayoutDetails({
 
             <div className="profile-header">
 
+
                 <div>
 
                     <h2>
-                        Payout Details
+                        Payout Account
                     </h2>
 
                     <p>
-                        Manage where your campaign
-                        funds are received.
+                        Manage the account used to
+                        receive funds from your campaigns.
                     </p>
 
                 </div>
@@ -114,14 +168,21 @@ export default function PayoutDetails({
 
                 <button
                     type="button"
+
                     onClick={() =>
-                        setActivePage("settings")
+                        setActivePage(
+                            "settings"
+                        )
                     }
                 >
+
                     Back
+
                 </button>
 
+
             </div>
+
 
 
             {/* ERROR */}
@@ -129,219 +190,204 @@ export default function PayoutDetails({
             {error && (
 
                 <p className="payout-message">
+
                     {error}
+
                 </p>
 
             )}
 
 
-            {/* NO PAYOUT DETAILS */}
+
+            {/* NOT CONNECTED */}
 
             {!error && !payout && (
 
                 <div className="payout-empty">
 
+
                     <div className="payout-empty-icon">
-                        $
+
+                        ₹
+
                     </div>
 
+
                     <h3>
-                        No payout method added
+
+                        No payout account connected
+
                     </h3>
 
+
                     <p>
-                        Add a payout method before
-                        starting a campaign.
+
+                        Connect your payout account
+                        before starting a campaign
+                        and receiving funds.
+
                     </p>
+
 
                     <button
                         type="button"
+
                         onClick={() =>
                             setActivePage(
                                 "edit-payout"
                             )
                         }
                     >
-                        Add Payout Details
+
+                        Connect Payout Account
+
                     </button>
+
 
                 </div>
 
             )}
 
 
-            {/* PAYOUT DETAILS */}
+
+            {/* CONNECTED ACCOUNT */}
 
             {!error && payout && (
 
                 <div className="payout-form">
 
 
-                    {/* METHOD */}
-
                     <div className="form-section">
 
-                        <h3>
-                            Payout Method
-                        </h3>
+
+                        <div className="payout-account-header">
+
+
+                            <div className="payout-provider-icon">
+
+                                ₹
+
+                            </div>
+
+
+                            <div>
+
+                                <h3>
+                                    Payout Account
+                                </h3>
+
+                                <p>
+                                    Connected through
+                                    the payment provider
+                                </p>
+
+                            </div>
+
+
+                        </div>
+
+
 
                         <div className="payout-detail-row">
 
+
                             <span>
-                                Method
+                                Account Status
                             </span>
 
-                            <strong>
-                                {
-                                    payout.payout_method ===
-                                    "bank"
-                                        ? "Bank Account"
-                                        : "UPI"
+
+                            <strong
+                                className={
+                                    payout
+                                        .razorpay_account_status ===
+                                    "connected"
+
+                                        ? "payout-status connected"
+
+                                        : "payout-status pending"
                                 }
+                            >
+
+                                {
+                                    payout
+                                        .razorpay_account_status ===
+                                    "connected"
+
+                                        ? "Connected"
+
+                                        : payout
+                                            .razorpay_account_status ||
+                                          "Pending"
+                                }
+
                             </strong>
 
+
                         </div>
+
+
+
+                        <div className="payout-detail-row">
+
+
+                            <span>
+                                Account ID
+                            </span>
+
+
+                            <strong>
+
+                                {
+                                    maskAccountId(
+                                        payout
+                                            .razorpay_account_id
+                                    )
+                                }
+
+                            </strong>
+
+
+                        </div>
+
 
                     </div>
 
 
 
-                    {/* BANK DETAILS */}
-
-                    {payout.payout_method ===
-                        "bank" && (
-
-                        <div className="form-section">
-
-                            <h3>
-                                Bank Account
-                            </h3>
-
-
-                            <div className="payout-detail-row">
-
-                                <span>
-                                    Account Holder
-                                </span>
-
-                                <strong>
-                                    {
-                                        payout
-                                            .account_holder_name ||
-                                        "Not available"
-                                    }
-                                </strong>
-
-                            </div>
-
-
-                            <div className="payout-detail-row">
-
-                                <span>
-                                    Bank Name
-                                </span>
-
-                                <strong>
-                                    {
-                                        payout.bank_name ||
-                                        "Not available"
-                                    }
-                                </strong>
-
-                            </div>
-
-
-                            <div className="payout-detail-row">
-
-                                <span>
-                                    Account Number
-                                </span>
-
-                                <strong>
-                                    {
-                                        payout
-                                            .account_number ||
-                                        "Not available"
-                                    }
-                                </strong>
-
-                            </div>
-
-
-                            <div className="payout-detail-row">
-
-                                <span>
-                                    IFSC Code
-                                </span>
-
-                                <strong>
-                                    {
-                                        payout.ifsc_code ||
-                                        "Not available"
-                                    }
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-                    )}
-
-
-
-                    {/* UPI DETAILS */}
-
-                    {payout.payout_method ===
-                        "upi" && (
-
-                        <div className="form-section">
-
-                            <h3>
-                                UPI Details
-                            </h3>
-
-                            <div className="payout-detail-row">
-
-                                <span>
-                                    UPI ID
-                                </span>
-
-                                <strong>
-                                    {
-                                        payout.upi_id ||
-                                        "Not available"
-                                    }
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-                    )}
-
-
-
-                    {/* SECURITY NOTICE */}
+                    {/* SECURITY */}
 
                     <div className="payout-security-notice">
 
+
                         <span className="security-icon">
+
                             🔒
+
                         </span>
+
 
                         <div>
 
+
                             <strong>
-                                Payout details are protected
+
+                                Your payout account is protected
+
                             </strong>
 
+
                             <p>
-                                For your security, you must
-                                verify your identity before
-                                changing payout information.
+
+                                Payout information and
+                                verification are handled
+                                securely through the
+                                payment provider.
+
                             </p>
 
+
                         </div>
+
 
                     </div>
 
@@ -351,28 +397,42 @@ export default function PayoutDetails({
 
                     <div className="payout-actions">
 
+
                         <button
                             type="button"
+
                             onClick={() =>
                                 setActivePage(
                                     "settings"
                                 )
                             }
                         >
+
                             Back
+
                         </button>
 
 
-                        <button
-                            type="button"
-                            onClick={() =>
-                                setActivePage(
-                                    "verify-payout"
-                                )
-                            }
-                        >
-                            Verify to Edit
-                        </button>
+                        {payout
+                            .razorpay_account_status !==
+                            "connected" && (
+
+                            <button
+                                type="button"
+
+                                onClick={() =>
+                                    setActivePage(
+                                        "edit-payout"
+                                    )
+                                }
+                            >
+
+                                Continue Setup
+
+                            </button>
+
+                        )}
+
 
                     </div>
 
@@ -381,7 +441,9 @@ export default function PayoutDetails({
 
             )}
 
+
         </div>
 
     );
+
 }

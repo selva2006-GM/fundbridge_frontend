@@ -54,10 +54,9 @@ export default function Donate() {
 
     }, [id]);
 
-
-    function handlePayment() {
+    async function handlePayment() {
         const donationAmount = Number(amount);
-
+    
         if (
             !donationAmount ||
             donationAmount <= 0
@@ -65,26 +64,176 @@ export default function Donate() {
             setError(
                 "Please enter a valid donation amount"
             );
-
             return;
         }
-
-        const upiUrl =
-            `upi://pay?pa=${encodeURIComponent(
-                campaign.upi_id
-            )}` +
-            `&pn=${encodeURIComponent(
-                campaign.account_holder_name
-            )}` +
-            `&am=${donationAmount}` +
-            `&cu=INR` +
-            `&tn=${encodeURIComponent(
-                `Donation for ${campaign.title}`
-            )}`;
-
-        window.location.href = upiUrl;
+    
+        try {
+            setError("");
+    
+            // Create Razorpay order from backend
+    
+            const response = await fetch(
+                `${API_URL}/api/payments/create-order`,
+                {
+                    method: "POST",
+    
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+    
+                    body: JSON.stringify({
+                        campaignId: campaign.id,
+                        amount: donationAmount
+                    })
+                }
+            );
+    
+            const order = await response.json();
+    
+            if (!response.ok) {
+                throw new Error(
+                    order.message ||
+                    "Unable to create payment order"
+                );
+            }
+    
+    
+            // Check Razorpay script
+    
+            if (!window.Razorpay) {
+                throw new Error(
+                    "Payment service failed to load"
+                );
+            }
+    
+    
+            const options = {
+                key: order.key,
+    
+                amount: order.amount,
+    
+                currency: order.currency,
+    
+                name: "FundBridge",
+    
+                description:
+                    `Donation for ${campaign.title}`,
+    
+                order_id: order.orderId,
+    
+    
+                handler: async function (
+                    paymentResponse
+                ) {
+                    try {
+                        const verifyResponse =
+                            await fetch(
+                                `${API_URL}/api/payments/verify`,
+                                {
+                                    method: "POST",
+    
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+    
+                                    body: JSON.stringify(
+                                        paymentResponse
+                                    )
+                                }
+                            );
+    
+                        const verifyData =
+                            await verifyResponse.json();
+    
+    
+                        if (!verifyResponse.ok) {
+                            throw new Error(
+                                verifyData.message ||
+                                "Payment verification failed"
+                            );
+                        }
+    
+    
+                        alert(
+                            "Thank you! Your donation was successful."
+                        );
+    
+    
+                        navigate(
+                            `/campaign/${campaign.id}`
+                        );
+    
+                    } catch (error) {
+                        console.error(
+                            "Payment verification error:",
+                            error
+                        );
+    
+                        setError(
+                            "Payment completed, but verification failed."
+                        );
+                    }
+                },
+    
+    
+                modal: {
+                    ondismiss: function () {
+                        console.log(
+                            "Payment window closed"
+                        );
+                    }
+                },
+    
+    
+                theme: {
+                    color: "#2563eb"
+                }
+            };
+    
+    
+            const razorpay =
+                new window.Razorpay(options);
+    
+    
+            razorpay.on(
+                "payment.failed",
+                function (response) {
+    
+                    console.error(
+                        "Payment failed:",
+                        response.error
+                    );
+    
+    
+                    setError(
+                        response.error.description ||
+                        "Payment failed. Please try again."
+                    );
+    
+                }
+            );
+    
+    
+            razorpay.open();
+    
+    
+        } catch (error) {
+    
+            console.error(
+                "Payment error:",
+                error
+            );
+    
+    
+            setError(
+                error.message ||
+                "Unable to start payment"
+            );
+    
+        }
     }
-
 
     if (loading) {
         return (
@@ -225,46 +374,33 @@ export default function Donate() {
                 </div>
 
 
-                {campaign.upi_id ? (
+                <div className="donation-method">
 
-                    <div className="donation-method">
+                    <h3>
+                        Pay securely with Razorpay
+                    </h3>
 
-                        <h3>
-                            Pay securely using UPI
-                        </h3>
+                    <p>
+                        Complete your donation securely
+                        using the available payment methods.
+                    </p>
 
-                        <p>
-                            Your payment will be sent to
-                            the campaign recipient.
-                        </p>
+                    <button
+                        type="button"
+                        className="pay-button"
+                        onClick={handlePayment}
+                        disabled={
+                            !amount ||
+                            Number(amount) <= 0
+                        }
+                    >
+                        Donate ₹
+                        {Number(
+                            amount || 0
+                        ).toLocaleString()}
+                    </button>
 
-
-                        <button
-                            className="pay-button"
-                            onClick={handlePayment}
-                            disabled={
-                                !amount ||
-                                Number(amount) <= 0
-                            }
-                        >
-                            Donate ₹
-                            {Number(
-                                amount || 0
-                            ).toLocaleString()}
-                        </button>
-
-                    </div>
-
-                ) : (
-
-                    <div className="no-payout">
-
-                        This campaign does not have
-                        payout details configured yet.
-
-                    </div>
-
-                )}
+                </div>
 
 
                 {error && (

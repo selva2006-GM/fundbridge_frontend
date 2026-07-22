@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import API_URL from "../../config/api";
+import API_URL from "../../../config/api";
 
 import "./EditCampaign.css";
 
@@ -107,7 +107,58 @@ export default function EditCampaign({
 
     }, [campaignId]);
 
-
+    async function handleImageChange(e) {
+        const file = e.target.files[0];
+    
+        if (!file) return;
+    
+        try {
+            setUploadingImage(true);
+            setMessage("");
+    
+            const imageData = new FormData();
+    
+            imageData.append("file", file);
+            imageData.append(
+                "upload_preset",
+                "YOUR_UPLOAD_PRESET"
+            );
+    
+            const response = await fetch(
+                "https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload",
+                {
+                    method: "POST",
+                    body: imageData
+                }
+            );
+    
+            const data = await response.json();
+    
+            if (!response.ok) {
+                throw new Error(
+                    data.error?.message ||
+                    "Image upload failed"
+                );
+            }
+    
+            setForm((currentForm) => ({
+                ...currentForm,
+                image_url: data.secure_url
+            }));
+    
+        } catch (error) {
+            console.error(
+                "IMAGE UPLOAD ERROR:",
+                error
+            );
+    
+            setMessage(error.message);
+    
+        } finally {
+            setUploadingImage(false);
+        }
+    }
+    
     function handleChange(e) {
 
         const {

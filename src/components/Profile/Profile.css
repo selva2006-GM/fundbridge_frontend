@@ -722,3 +722,70 @@
         width: 100%;
     }
 }
+
+.payout-reminder {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    margin: 24px 0;
+    padding: 20px 24px;
+
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 12px;
+}
+
+.payout-reminder > div {
+    flex: 1;
+}
+
+.payout-reminder strong {
+    display: block;
+    margin-bottom: 6px;
+
+    color: #9a3412;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.payout-reminder p {
+    margin: 0;
+
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.payout-reminder button {
+    flex-shrink: 0;
+
+    padding: 11px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #2563eb;
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.payout-reminder button:hover {
+    background: #1d4ed8;
+}
+
+@media (max-width: 700px) {
+    .payout-reminder {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .payout-reminder button {
+        width: 100%;
+    }
+}

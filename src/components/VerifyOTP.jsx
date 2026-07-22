@@ -6,6 +6,7 @@ import {
 
 import API_URL from "../config/api";
 
+import "./VerifyOTP.css";
 export default function VerifyOTP() {
     const navigate = useNavigate();
     const location = useLocation();

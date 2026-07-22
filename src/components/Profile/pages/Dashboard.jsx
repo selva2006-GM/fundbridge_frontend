@@ -8,10 +8,10 @@ export default function Dashboard({
     const activeCampaigns = campaigns.filter((campaign) => {
         const endDate = new Date(campaign.end_date);
         const today = new Date();
-    
+
         const raised = Number(campaign.raised_amount || 0);
         const goal = Number(campaign.goal_amount || 0);
-    
+
         return (
             endDate >= today &&
             raised < goal
@@ -131,6 +131,7 @@ export default function Dashboard({
                                 <CampaignCard
                                     key={campaign.id}
                                     campaign={campaign}
+                                    showDonate={false}
                                 />
 
                             ))}

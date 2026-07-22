@@ -1,0 +1,116 @@
+.verify-payout-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    background: #f5f7fa;
+    box-sizing: border-box;
+}
+
+.verify-payout-card {
+    width: 100%;
+    max-width: 480px;
+    padding: 40px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+}
+
+.verify-payout-back {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.verify-payout-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    background: #eef4ff;
+    font-size: 25px;
+}
+
+.verify-payout-card h2 {
+    margin: 0 0 12px;
+    font-size: 28px;
+    color: #1f2937;
+}
+
+.verify-payout-description {
+    margin-bottom: 25px;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+.verify-payout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.verify-payout-form label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.verify-payout-form input {
+    width: 100%;
+    padding: 14px;
+    box-sizing: border-box;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 8px;
+}
+
+.verify-payout-form input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.verify-payout-form button {
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.verify-payout-form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.verify-payout-message {
+    margin-top: 18px;
+    padding: 12px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    color: #4b5563;
+    font-size: 14px;
+}
+
+.verify-payout-resend {
+    margin-top: 15px;
+    padding: 8px 0;
+    border: none;
+    background: transparent;
+    color: #2563eb;
+    font-weight: 600;
+    cursor: pointer;
+}
