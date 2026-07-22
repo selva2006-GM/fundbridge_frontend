@@ -8,6 +8,7 @@ import Profile from "./components/Profile/Profile";
 import StartCampaign from "./components/StartCampaign";
 import CreateCampaign from "./components/CreateCampaign";
 import Campaigns from "./components/Campaigns";
+import CampaignDetails from "./components/CampaignDetails";
 import VerifyOTP from "./components/VerifyOTP";
 import Donate from "./components/Donate";
 
@@ -39,10 +40,8 @@ function App() {
             {!hideNav && <Nav />}
 
             <Routes>
-                <Route
-                    path="/"
-                    element={
-                        token
+                <Route path="/" element={
+                    token
                             ? <Navigate to="/profile" replace />
                             : <Home />
                     }
@@ -52,16 +51,13 @@ function App() {
                 <Route path="/login" element={<Login />} />
 
                 {/* Profile page goes here */}
-                <Route
-                    path="/profile"
-                    element={<Profile />}
-                />
-
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/start-campaign" element={<StartCampaign />} />
                 <Route path="/create-campaign" element={<CreateCampaign />} />
                 <Route path="/campaigns" element={<Campaigns />} />
                 <Route path="/verify-otp" element={<VerifyOTP />} />
                 <Route path="/campaign/:id/donate" element={<Donate />} />
+                <Route path="/campaign/:id" element={<CampaignDetails />} />
             </Routes>
         </>
     );

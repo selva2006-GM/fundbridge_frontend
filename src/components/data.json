@@ -1,0 +1,41 @@
+{
+    "hero": {
+      "title": "Together, We Can Make a Difference.",
+      "description": "Discover meaningful causes, support people who need help, or start your own fundraising campaign.",
+      "exploreButton": "Explore Campaigns",
+      "startButton": "Start a Campaign"
+    },
+    "howItWorks": {
+      "title": "How FundBridge Works",
+      "description": "Start supporting meaningful causes in just a few simple steps.",
+      "steps": [
+        {
+          "id": 1,
+          "title": "Discover a Campaign",
+          "description": "Explore verified fundraising campaigns and find a cause you want to support."
+        },
+        {
+          "id": 2,
+          "title": "Make a Contribution",
+          "description": "Donate securely and help campaign creators move closer to their fundraising goals."
+        },
+        {
+          "id": 3,
+          "title": "Make an Impact",
+          "description": "Your contribution becomes part of a collective effort to create meaningful change."
+        }
+      ]
+    },
+    "campaignSection": {
+      "title": "Urgent Campaigns",
+      "description": "Support campaigns that need your help the most.",
+      "loadingMessage": "Loading campaigns...",
+      "errorMessage": "Unable to load campaigns. Please try again later.",
+      "emptyMessage": "No campaigns are available right now."
+    },
+    "cta": {
+      "title": "Have a Cause That Needs Support?",
+      "description": "Start your fundraising campaign and connect with people who want to make a difference.",
+      "button": "Start a Campaign"
+    }
+  }

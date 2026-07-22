@@ -226,8 +226,36 @@ export default function Donate() {
             document.body.appendChild(script);
         });
     }
-
-
+    if (loading) {
+        return (
+            <div className="donate-page">
+                <p>Loading campaign...</p>
+            </div>
+        );
+    }
+    
+    if (error && !campaign) {
+        return (
+            <div className="donate-page">
+                <p className="donation-error">
+                    {error}
+                </p>
+    
+                <button onClick={() => navigate(-1)}>
+                    ← Back
+                </button>
+            </div>
+        );
+    }
+    
+    if (!campaign) {
+        return (
+            <div className="donate-page">
+                <p>Campaign not found.</p>
+            </div>
+        );
+    }
+    
     return (
         <div className="donate-page">
 

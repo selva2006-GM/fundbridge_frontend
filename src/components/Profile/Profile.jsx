@@ -31,7 +31,7 @@ export default function Profile() {
     const [selectedCampaignId, setSelectedCampaignId] =
         useState(null);
     const [payoutConnected, setPayoutConnected] =
-    useState(false);
+    useState(null);
 
     async function fetchMyCampaigns() {
         const token = localStorage.getItem("token");
