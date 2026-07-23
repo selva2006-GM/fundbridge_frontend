@@ -18,21 +18,21 @@ import ChangePassword from "./pages/ChangePassword";
 import DeleteAccount from "./pages/DeleteAccount";
 import "./Profile.css";
 
-
 export default function Profile() {
     const navigate = useNavigate();
 
-    const [activePage, setActivePage] = useState("dashboard");
-
+    const [activePage, setActivePage] =
+        useState("dashboard");
 
     const [user, setUser] = useState(null);
     const [campaigns, setCampaigns] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const [payoutConnected, setPayoutConnected] =
+        useState(false);
+
     const [selectedCampaignId, setSelectedCampaignId] =
         useState(null);
-    const [payoutConnected, setPayoutConnected] =
-    useState(null);
-
     async function fetchMyCampaigns() {
         const token = localStorage.getItem("token");
 
@@ -99,10 +99,6 @@ export default function Profile() {
                 }
     
                 setUser(data.user);
-                setCampaigns(
-                    data.campaigns || []
-                );
-    
             } catch (error) {
     
                 console.error(

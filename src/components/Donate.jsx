@@ -77,20 +77,25 @@ export default function Donate() {
             }
     
             // Create Razorpay order
+
+            const token = localStorage.getItem("token");
+            
+            const headers = {
+                "Content-Type": "application/json"
+            };
+            
+            if (token) {
+                headers.Authorization = `Bearer ${token}`;
+            }
+            
             const response = await fetch(
                 `${API_URL}/api/payments/create-order`,
                 {
                     method: "POST",
-            
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization:
-                            `Bearer ${localStorage.getItem("token")}`
-                    },
-            
+                    headers,
                     body: JSON.stringify({
                         campaignId: id,
-                        amount: Number(amount)
+                        amount: donationAmount
                     })
                 }
             );

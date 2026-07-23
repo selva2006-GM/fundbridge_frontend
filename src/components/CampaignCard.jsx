@@ -14,12 +14,19 @@ export default function CampaignCard({
     campaign.end_date &&
     new Date(campaign.end_date) < new Date();
 
-    function handleDonate() {
+    function handleDonate(e) {
+        e.stopPropagation();
         navigate(`/campaign/${campaign.id}/donate`);
+    }
+    
+    function handleOpenCampaign() {
+        navigate(`/campaign/${campaign.id}`);
     }
 
     return (
-        <div className="campaign-card">
+        <div className="campaign-card" onClick={handleOpenCampaign}
+            style={{ cursor: "pointer" }}
+        >
 
             {campaign.image_url && (
                 <img
@@ -83,7 +90,10 @@ export default function CampaignCard({
 {showEdit && (
     <button
         className="edit-campaign-btn"
-        onClick={() => onEdit(campaign.id)}
+        onClick={(e) => {
+            e.stopPropagation();
+            onEdit(campaign.id);
+        }}
     >
         Edit Campaign
     </button>

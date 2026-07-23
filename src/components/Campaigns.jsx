@@ -38,6 +38,8 @@ export default function Campaigns(){
 
                 const data = await response.json();
 
+                console.log("REQUEST URL:", `${API_URL}/api/campaigns?${params}`);
+console.log("API RESPONSE:", data);
                 if (!response.ok) {
                     throw new Error(
                         data.message || "Failed to load campaigns"

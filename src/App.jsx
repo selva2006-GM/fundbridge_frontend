@@ -12,22 +12,30 @@ import CampaignDetails from "./components/CampaignDetails";
 import VerifyOTP from "./components/VerifyOTP";
 import Donate from "./components/Donate";
 
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import {
+    Routes,
+    Route,
+    useLocation,
+    Navigate
+} from "react-router-dom";
 
 function App() {
     const location = useLocation();
     const token = localStorage.getItem("token");
 
+    // Hide navbar on these exact pages
     const hideNavPages = [
         "/login",
         "/register",
-        "/profile",
-        "/donate"
+        "/profile"
     ];
 
-    
+    // Support both donation URL formats
     const isDonatePage =
         /^\/campaign\/[^/]+\/donate$/.test(
+            location.pathname
+        ) ||
+        /^\/donate\/[^/]+$/.test(
             location.pathname
         );
 
@@ -40,24 +48,91 @@ function App() {
             {!hideNav && <Nav />}
 
             <Routes>
-                <Route path="/" element={
-                    token
-                            ? <Navigate to="/profile" replace />
+
+                <Route
+                    path="/"
+                    element={
+                        token
+                            ? (
+                                <Navigate
+                                    to="/profile"
+                                    replace
+                                />
+                            )
                             : <Home />
                     }
                 />
 
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
+                <Route
+                    path="/register"
+                    element={<Register />}
+                />
 
-                {/* Profile page goes here */}
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/start-campaign" element={<StartCampaign />} />
-                <Route path="/create-campaign" element={<CreateCampaign />} />
-                <Route path="/campaigns" element={<Campaigns />} />
-                <Route path="/verify-otp" element={<VerifyOTP />} />
-                <Route path="/campaign/:id/donate" element={<Donate />} />
-                <Route path="/campaign/:id" element={<CampaignDetails />} />
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
+
+                <Route
+                    path="/profile"
+                    element={<Profile />}
+                />
+
+                <Route
+                    path="/start-campaign"
+                    element={<StartCampaign />}
+                />
+
+                <Route
+                    path="/create-campaign"
+                    element={<CreateCampaign />}
+                />
+
+                <Route
+                    path="/campaigns"
+                    element={<Campaigns />}
+                />
+
+                <Route
+                    path="/verify-otp"
+                    element={<VerifyOTP />}
+                />
+
+
+                {/* Donation routes */}
+
+                <Route
+                    path="/campaign/:id/donate"
+                    element={<Donate />}
+                />
+
+                {/* Support old donation URL */}
+                <Route
+                    path="/donate/:id"
+                    element={<Donate />}
+                />
+
+
+                {/* Keep this after donation route */}
+
+                <Route
+                    path="/campaign/:id"
+                    element={<CampaignDetails />}
+                />
+
+
+                {/* Unknown route */}
+
+                <Route
+                    path="*"
+                    element={
+                        <Navigate
+                            to="/"
+                            replace
+                        />
+                    }
+                />
+
             </Routes>
         </>
     );
